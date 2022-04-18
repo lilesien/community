@@ -67,7 +67,8 @@
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" >
             <h2><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>发现问题</h2>
             <hr>
-            <div class="media" th:each="question : ${questionList}" >
+<!--            输出页面的问题部分-->
+            <div class="media" th:each="question : ${pageInfo.questionList}" >
                 <div class="media-left">
                     <a href="#">
                         <img class="media-object img-rounded" th:src="${question.getUser().getAvatarUrl()}" src="https://avatars.githubusercontent.com/u/62526735?v=4">
@@ -80,6 +81,33 @@
                     <span class="text-desc"> <span th:text="${question.getCommentCount()}"></span>个评论 • <span th:text="${question.getViewCount()}"></span> 次浏览 • <span th:text="${#dates.format(question.getGmtCreate(),'yyyy-MM-dd')}"></span></span>
                 </div>
             </div>
+<!--            输出页面的分页部分-->
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li>
+                        <a th:if="${pageInfo.hasFirst}" th:href="@{/(page=${1})}" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&lt;&lt;</span>
+                        </a>
+                        <a th:if="${pageInfo.hasPrevious}" th:href="@{/(page=${pageInfo.currentPage - 1})}" href="#" aria-label="Next">
+                            <span aria-hidden="true">&lt;</span>
+                        </a>
+                    </li>
+                    <li th:class="${page == pageInfo.currentPage} ? 'active' : '' " th:each="page : ${pageInfo.pageList}"><a th:text="${page}" th:href="@{/(page=${page})}">*</a></li>
+<!--                    <li><a href="#">1</a></li>-->
+<!--                    <li><a href="#">2</a></li>-->
+<!--                    <li><a href="#">3</a></li>-->
+<!--                    <li><a href="#">4</a></li>-->
+<!--                    <li><a href="#">5</a></li>-->
+                    <li>
+                        <a th:if="${pageInfo.hasNext}"  th:href="@{/(page=${pageInfo.currentPage+1})}" href="#" aria-label="Next">
+                            <span aria-hidden="true">&gt;</span>
+                        </a>
+                        <a th:if="${pageInfo.hasEnd}" th:href="@{/(page=${pageInfo.totalPage})}" href="#" aria-label="Next">
+                            <span aria-hidden="true">&gt;&gt;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <h3><strong>热门话题</strong></h3>

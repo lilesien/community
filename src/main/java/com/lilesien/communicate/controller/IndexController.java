@@ -1,5 +1,6 @@
 package com.lilesien.communicate.controller;
 
+import com.lilesien.communicate.dto.PaginationDTO;
 import com.lilesien.communicate.dto.QuestionDTO;
 import com.lilesien.communicate.pojo.User;
 import com.lilesien.communicate.mapper.UserMapper;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +27,10 @@ public class IndexController {
     private QuestionService questionService;
 
     @RequestMapping({"/","/index"})
-    public String index(HttpServletRequest request, Model model){
+    public String index(HttpServletRequest request,
+                        Model model,
+                        @RequestParam(value = "page", defaultValue = "1") Integer page,
+                        @RequestParam(value = "size", defaultValue = "3") Integer size){
         Cookie[] cookies = request.getCookies();
         //从浏览器中判断cookie信息，
         if (cookies != null) {
@@ -43,9 +48,12 @@ public class IndexController {
                 }
             }
         }
-        List<QuestionDTO> list = questionService.list();
-        log.info("question集合:" + list);
-        model.addAttribute("questionList", list);
+//        List<QuestionDTO> list = questionService.list();
+        PaginationDTO pagination = questionService.list(page, size);
+/*        log.info("question集合:" + list);
+        model.addAttribute("questionList", list);*/
+        log.info("当前页面详情:" + pagination);
+        model.addAttribute("pageInfo", pagination);
         return "index";
     }
 }
