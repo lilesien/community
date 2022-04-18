@@ -1,0 +1,23 @@
+/*输入问题的框*/
+.main{
+    margin: 30px;
+    background-color: white;
+}
+/*主题body的设置*/
+body{
+    background-color: #efefef;
+}
+/*提交按钮的设置*/
+.btn-publish{
+    float: right;
+    margin-bottom: 15px;
+}
+.media-object{
+    width: 38px;
+    height: 38px;
+}
+.text-desc{
+    font-size: 12px;
+    font-weight: normal;
+    color: #999
+}

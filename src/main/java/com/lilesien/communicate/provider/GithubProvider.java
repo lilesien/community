@@ -41,6 +41,7 @@ public class GithubProvider {
 
     //拿到token后通过user路径传递参数请求用户数据
     public GithubUser getUser(String accessToken) {
+        if(accessToken == null) return null;
         OkHttpClient client = new OkHttpClient();
 
 
