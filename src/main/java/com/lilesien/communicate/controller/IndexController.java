@@ -32,7 +32,7 @@ public class IndexController {
                         @RequestParam(value = "page", defaultValue = "1") Integer page,
                         @RequestParam(value = "size", defaultValue = "3") Integer size){
         Cookie[] cookies = request.getCookies();
-        //从浏览器中判断cookie信息，
+        //从浏览器中判断cookie信息，通过cookie中的token从数据库获取用户
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("accountId")) {
@@ -48,7 +48,7 @@ public class IndexController {
                 }
             }
         }
-//        List<QuestionDTO> list = questionService.list();
+//        List<QuestionDTO> list = questionService.list();//分页前的question集合
         PaginationDTO pagination = questionService.list(page, size);
 /*        log.info("question集合:" + list);
         model.addAttribute("questionList", list);*/

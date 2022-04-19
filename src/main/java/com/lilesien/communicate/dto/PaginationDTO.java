@@ -15,7 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 public class PaginationDTO {
     private List<QuestionDTO> questionList;
+    //当前页
     private Integer currentPage;
+    //页的总数
     private Integer totalPage;
     private boolean hasFirst;
     private boolean hasEnd;
