@@ -7,12 +7,15 @@ import com.lilesien.communicate.mapper.UserMapper;
 import com.lilesien.communicate.provider.GithubProvider;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.lilesien.communicate.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -33,6 +36,9 @@ public class AuthorizeController {
     
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserService userService;
     
     //callback为第一次请求用户信息时的回调网址
     @RequestMapping("/callback")
@@ -63,19 +69,31 @@ public class AuthorizeController {
             user.setName(githubUser.getName());
             user.setAccountId(String.valueOf(githubUser.getId()));
             user.setAvatarUrl(githubUser.getAvatarUrl());
-            //设置创建时间
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
+
             log.info("与数据库中token不一样的用户:" + user);
-            if(userMapper.selectByAccountId(user.getAccountId()) == null) {
+
+            userService.createOrUpdate(user);
+/*            if(userMapper.selectByAccountId(user.getAccountId()) == null) {
                 log.info("数据库新增用户");
                 userMapper.insert(user);
-            }
+            }*/
             //session.setAttribute("user",githubUser);转为使用cookie存储用户信息返回到首页进行判断
             //存储name为token，value为数据库中用户token的cookie
             response.addCookie(new Cookie("accountId", user.getAccountId()));
             return "redirect:/";
         }
+        return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response){
+        //删除session中的user属性
+        request.getSession().removeAttribute("user");
+        //删除cookie
+        Cookie cookie = new Cookie("accountId",null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
         return "redirect:/";
     }
 

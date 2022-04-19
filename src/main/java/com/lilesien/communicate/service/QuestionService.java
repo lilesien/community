@@ -82,4 +82,30 @@ public class QuestionService {
         paginationDTO.setDetail(page, pageCount, size);
         return paginationDTO;
     }
+
+    public QuestionDTO getById(Integer id) {
+        Question question = questionMapper.getByQuestionId(id);
+        User user = usermapper.findById(question.getCreator());
+        QuestionDTO questionDTO = new QuestionDTO();
+        BeanUtils.copyProperties(question, questionDTO);
+        questionDTO.setUser(user);
+        return questionDTO;
+    }
+
+    /**
+     *
+     * @param id    问题的id
+     * @param question  问题的信息
+     */
+    public void createOrUpdate(Integer id, Question question) {
+        //如果id为空，表示是新发布的问题，如果不是，则表示是修改问题
+        if(id == null){
+            question.setGmtCreate(System.currentTimeMillis());
+            question.setGmtModified(question.getGmtCreate());
+            questionMapper.insert(question);
+        }else {
+            question.setGmtModified(System.currentTimeMillis());
+            questionMapper.update(question);
+        }
+    }
 }

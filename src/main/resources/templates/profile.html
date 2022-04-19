@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <title th:text="${titleName}">社区首页</title>
     <!--jquery.js应该放在bootstrap.js的前面-->
-    <script src="/js/jquery-3.6.0.min.js"></script>
-    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="/css/community.css">
+    <script th:src="@{/js/jquery-3.6.0.min.js}" src="js/jquery-3.6.0.min.js"></script>
+    <script th:src="@{/js/bootstrap.min.js}" type="text/javascript"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-theme.min.css}">
+    <link rel="stylesheet" th:href="@{/css/community.css}">
 </head>
 <body>
 <div th:replace="~{commons/common::headbar}"></div>

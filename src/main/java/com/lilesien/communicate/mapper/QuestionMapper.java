@@ -1,10 +1,8 @@
 package com.lilesien.communicate.mapper;
 
+import com.lilesien.communicate.dto.QuestionDTO;
 import com.lilesien.communicate.pojo.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -22,4 +20,10 @@ public interface QuestionMapper {
 
     @Select("select * from question where creator = #{userId} limit #{offset}, #{size}")
     List<Question> findQuestionByUserId(@Param("userId") Integer userId, @Param("offset") Integer offset, @Param("size") Integer size);
+
+    @Select("select * from question where id = #{id}")
+    Question getByQuestionId(@Param("id") Integer id);
+
+    @Update("update question set title = #{title}, description = #{description}, tag = #{tag}, gmt_modified = #{gmtModified} where id = #{id}")
+    void update(Question question);
 }
