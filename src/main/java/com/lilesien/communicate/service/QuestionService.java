@@ -2,6 +2,8 @@ package com.lilesien.communicate.service;
 
 import com.lilesien.communicate.dto.PaginationDTO;
 import com.lilesien.communicate.dto.QuestionDTO;
+import com.lilesien.communicate.exception.CustomizeErrorCode;
+import com.lilesien.communicate.exception.CustomizeException;
 import com.lilesien.communicate.mapper.QuestionMapper;
 import com.lilesien.communicate.mapper.UserMapper;
 import com.lilesien.communicate.pojo.Question;
@@ -85,6 +87,9 @@ public class QuestionService {
 
     public QuestionDTO getById(Integer id) {
         Question question = questionMapper.getByQuestionId(id);
+        if(question == null){
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         User user = usermapper.findById(question.getCreator());
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
@@ -94,18 +99,20 @@ public class QuestionService {
 
     /**
      *
-     * @param id    问题的id
      * @param question  问题的信息
      */
-    public void createOrUpdate(Integer id, Question question) {
+    public void createOrUpdate(Question question) {
         //如果id为空，表示是新发布的问题，如果不是，则表示是修改问题
-        if(id == null){
+        if(question.getId() == null){
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
             questionMapper.insert(question);
         }else {
             question.setGmtModified(System.currentTimeMillis());
-            questionMapper.update(question);
+            Integer update = questionMapper.update(question);
+            if(update == 0){
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
         }
     }
 }

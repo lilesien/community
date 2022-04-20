@@ -76,7 +76,7 @@ public class PublishController {
         question.setCreator(user.getId());
         log.info("question:" + question);
 //        questionMapper.insert(question);
-        questionService.createOrUpdate(id, question);
+        questionService.createOrUpdate(question);
         log.info("问题插入数据库");
         return "redirect:/";
     }
