@@ -17,8 +17,6 @@ public class MyMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(communityInterceptor)
-                .addPathPatterns("/publish/**")
-                .addPathPatterns("/profile/**")
-                .addPathPatterns("/question/**");
+                .addPathPatterns("/publish/**","/profile/**","/comment/**");
     }
 }

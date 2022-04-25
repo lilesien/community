@@ -9,7 +9,24 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/bootstrap-theme.min.css}">
     <link rel="stylesheet" th:href="@{/css/community.css}">
+    <script th:src="@{/js/community.js}"></script>
 </head>
+<script type="text/javascript">
+    window.onload = function (){
+        var url = sessionStorage.getItem("gotoUrl");
+        if(url){
+            //返回的页面，
+            sessionStorage.removeItem("gotoUrl");
+            window.location.href = url;
+        }else {
+            var returnUrl = sessionStorage.getItem("returnUrl");
+            if (returnUrl) {
+                sessionStorage.removeItem("returnUrl");
+                window.location.href = returnUrl;
+            }
+        }
+    }
+</script>
 <body>
 <div th:replace="~{commons/common::headbar}"></div>
 <div class="container-fluid main">

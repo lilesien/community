@@ -26,7 +26,7 @@
                 </div>
                 <div class="media-body">
                     <!--<h4 class="media-heading" ><a role="button" aria-haspopup="true" aria-expanded="false"> <span th:text="${question.getTitle()}">怎么快速学会springboot开发</span></a></h4>-->
-                    <h4 class="media-heading" href="#" th:text="${question.getTitle()}">怎么快速学会springboot开发</h4>
+                    <h4 class="media-heading" href="#"><a th:href="@{/question/{id}(id=${question.id})}" th:text="${question.getTitle()}">怎么快速学会springboot开发</a></h4>
                     <span th:text="${question.description}"></span><br>
                     <span class="text-desc"> <span th:text="${question.getCommentCount()}"></span>个评论 • <span th:text="${question.getViewCount()}"></span> 次浏览 • <span th:text="${#dates.format(question.getGmtCreate(),'yyyy-MM-dd')}"></span></span>
                 </div>

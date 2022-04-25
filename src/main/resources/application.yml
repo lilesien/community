@@ -5,12 +5,12 @@ github:
     secret: 0fcc6db2e9213b42ec4e77a3daf438e37e94f362
     redirectUri: http://localhost:8080/callback
 
-
 mybatis:
   type-aliases-package: com.lilesien.dto
   mapper-locations: classpath:mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
+
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource

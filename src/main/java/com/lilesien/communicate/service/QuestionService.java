@@ -41,7 +41,7 @@ public class QuestionService {
         //通过查出的问题的创建者ID找到用户，并封装到一个新的问题类中1
         for (Question question : questionList) {
             User user = usermapper.findById(question.getCreator());
-            System.out.println(user);
+            System.out.println("questionService:list(..)" + user);
             //创建QuestionDTO，将用户封装到新的问题类中，并将新的问题类添加到集合中
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question,questionDTO);
@@ -71,7 +71,7 @@ public class QuestionService {
         //通过查出的问题的创建者ID找到用户，并封装到一个新的问题类中1
         for (Question question : questionList) {
             User user = usermapper.findById(question.getCreator());
-            System.out.println(user);
+            System.out.println("questionService : list(...) : " + user);
             //创建QuestionDTO，将用户封装到新的问题类中，并将新的问题类添加到集合中
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question,questionDTO);
@@ -90,6 +90,8 @@ public class QuestionService {
         if(question == null){
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
         }
+        //阅读数加1
+        questionMapper.incrViewById(id);
         User user = usermapper.findById(question.getCreator());
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
@@ -110,6 +112,7 @@ public class QuestionService {
         }else {
             question.setGmtModified(System.currentTimeMillis());
             Integer update = questionMapper.update(question);
+            //更新失败，问题不存在
             if(update == 0){
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }

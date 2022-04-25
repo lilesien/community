@@ -1,5 +1,7 @@
 package com.lilesien.communicate.interceptor;
 
+import com.lilesien.communicate.exception.CustomizeErrorCode;
+import com.lilesien.communicate.exception.CustomizeException;
 import com.lilesien.communicate.pojo.User;
 import com.lilesien.communicate.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -34,11 +36,11 @@ public class CommunityInterceptor implements HandlerInterceptor {
                 }
             }
         }
-
+        //
         if(request.getSession().getAttribute("user") == null){
-             request.getSession().setAttribute("msg","请先进行登陆");
-             response.sendRedirect("/");
-             return false;
+             throw new CustomizeException(CustomizeErrorCode.NO_LOGIN);
+//             response.sendRedirect("/");
+//             return false;
          }
 
         return true;
