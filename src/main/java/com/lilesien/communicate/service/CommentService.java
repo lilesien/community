@@ -50,6 +50,8 @@ public class CommentService {
             }
             //回复的评论存在时，将评论插入数据库
             commentMapper.insert(comment);
+            //父类评论评论数增加
+            commentMapper.incrCommentCountById(1, comment.getParentId());
         }else {
             //回复问题
             //通过parentId查找问题
@@ -71,10 +73,10 @@ public class CommentService {
      * @param id
      * @return
      */
-    public List<CommentDTO> listByQuestionId(Integer id) {
+    public List<CommentDTO> listByIdAndType(Integer id, Integer type) {
 
         //查找评论
-        List<Comment> commentList =  commentMapper.selectCommentsByParentIdAndTypeDesc(id,CommentTypeEnum.QUESTION.getType());
+        List<Comment> commentList =  commentMapper.selectCommentsByParentIdAndTypeDesc(id,type);
         if(commentList.size() == 0){
             return new ArrayList<>();
         }
@@ -96,6 +98,7 @@ public class CommentService {
             commentDTO.setUser(userMap.get(comment.getCommenter()));
             return commentDTO;
         }).collect(Collectors.toList());
+
 
         return commentDTOList;
     }

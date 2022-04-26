@@ -2,6 +2,7 @@ package com.lilesien.communicate.controller;
 
 import com.lilesien.communicate.dto.CommentDTO;
 import com.lilesien.communicate.dto.QuestionDTO;
+import com.lilesien.communicate.enums.CommentTypeEnum;
 import com.lilesien.communicate.service.CommentService;
 import com.lilesien.communicate.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class QuestionController {
 
         QuestionDTO question = questionService.getById(id);
 
-        List<CommentDTO> commentDTOList = commentService.listByQuestionId(question.getId());
+        List<CommentDTO> commentDTOList = commentService.listByIdAndType(question.getId(), CommentTypeEnum.QUESTION.getType());
 
         model.addAttribute("question", question);
         model.addAttribute("comments",commentDTOList);
