@@ -18,7 +18,7 @@ public interface QuestionMapper {
     @Select("select count(1) from question")
     Integer count();
 
-    @Select("select * from question where creator = #{userId} limit #{offset}, #{size}")
+    @Select("select * from question where creator = #{userId} order by gmt_create desc limit #{offset}, #{size}")
     List<Question> findQuestionByUserId(@Param("userId") Integer userId, @Param("offset") Integer offset, @Param("size") Integer size);
 
     @Select("select * from question where id = #{id}")
@@ -35,4 +35,10 @@ public interface QuestionMapper {
 
     @Update("update question set comment_count = comment_count + #{commentCount} where id = #{id}")
     void incrCommentById(Question question);
+
+    @Select("select * from question order by gmt_create desc limit #{offset}, #{size} ")
+    List<Question> listByGmtcreateDesc(@Param("offset") int offset, @Param("size") Integer size);
+
+    @Select("select * from question where id != #{id} and tag regexp #{tag}")
+    List<Question> selectRelatedQuestion(Question question);
 }

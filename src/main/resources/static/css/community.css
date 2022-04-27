@@ -67,16 +67,18 @@ body {
     margin-right: 5px;
 }
 
+
+
 .question-related {
     line-height: 20px;
-    font-size: 12px;
+    font-size: 15px;
     margin-left: 0;
     list-style: none;
     padding-left: 0;
 }
 
 .question-wechat {
-    width: 95%;
+    width: 100%;
 }
 
 .publish-tag-tab {
@@ -152,6 +154,7 @@ body {
     color: #499ef3;
 }
 
+
 .menu .active {
     color: #499ef3;
 }
@@ -169,4 +172,8 @@ body {
 
 .red {
     color: red !important;
+}
+
+.question-tag{
+    margin-right: 5px;
 }

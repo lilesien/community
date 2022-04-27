@@ -1,5 +1,6 @@
 package com.lilesien.communicate.controller;
 
+import com.lilesien.communicate.cache.TagCache;
 import com.lilesien.communicate.dto.QuestionDTO;
 import com.lilesien.communicate.pojo.Question;
 import com.lilesien.communicate.pojo.User;
@@ -23,7 +24,8 @@ public class PublishController {
     private QuestionService questionService;
 
     @GetMapping("/publish")
-    public String publish(){
+    public String publish(Model model){
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 
@@ -35,6 +37,7 @@ public class PublishController {
         model.addAttribute("description",questionDTO.getDescription());
         model.addAttribute("tag",questionDTO.getTag());
         model.addAttribute("id",id);
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 
@@ -52,18 +55,29 @@ public class PublishController {
     public String doPublish(@RequestParam("title") String title,
                             @RequestParam("description") String description,
                             @RequestParam("tag") String tag,
-                            @RequestParam(value = "id") Integer id,
+                            @RequestParam(value = "id", required = false) Integer id,
                             HttpSession session,
                             Model model){
         model.addAttribute("title",title);
         model.addAttribute("description",description);
         model.addAttribute("tag",tag);
+        model.addAttribute("tags", TagCache.get());
         if(StringUtils.isEmpty(title)){
             model.addAttribute("error","标题不能为空");
             return "publish";
         }
         if(StringUtils.isEmpty(description)){
             model.addAttribute("error", "内容不能为空");
+            return "publish";
+        }
+        if (StringUtils.isEmpty(tag)) {
+            model.addAttribute("error", "标题不能为空");
+            return "publish";
+        }
+        //得到不合法的标签
+        String invalid = TagCache.filterInvalid(tag);
+        if(!StringUtils.isEmpty(invalid)){
+            model.addAttribute("error","输入非法标签" + invalid);
             return "publish";
         }
         Question question = new Question();

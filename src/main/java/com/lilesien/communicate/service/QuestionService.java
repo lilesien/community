@@ -12,9 +12,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -33,7 +36,7 @@ public class QuestionService {
         page = page > pageCount ? pageCount : page;
         int offset = (page - 1) * size;
         //查询指定范围的问题
-        List<Question> questionList = questionMapper.list(offset, size);
+        List<Question> questionList = questionMapper.listByGmtcreateDesc(offset, size);;
         //新的问题类的集合
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         //页面的信息
@@ -117,5 +120,26 @@ public class QuestionService {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
         }
+    }
+
+    public List<QuestionDTO> selectRelatedQuestion(QuestionDTO queryDTO) {
+        if(StringUtils.isEmpty(queryDTO.getTag())){
+            return new ArrayList<>();
+        }
+        String regexTag = Arrays.stream(queryDTO.getTag().split(",")).collect(Collectors.joining("|"));
+        Question question = new Question();
+        question.setId(queryDTO.getId());
+        question.setTag(regexTag);
+
+        List<Question> questions = questionMapper.selectRelatedQuestion(question);
+
+        List<QuestionDTO> questionDTOList = questions.stream().map(q -> {
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(q, questionDTO);
+            return questionDTO;
+        }).collect(Collectors.toList());
+
+        return questionDTOList;
+
     }
 }
