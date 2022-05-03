@@ -2,6 +2,7 @@ package com.lilesien.communicate.interceptor;
 
 import com.lilesien.communicate.exception.CustomizeErrorCode;
 import com.lilesien.communicate.exception.CustomizeException;
+import com.lilesien.communicate.mapper.NotificationMapper;
 import com.lilesien.communicate.pojo.User;
 import com.lilesien.communicate.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,9 @@ public class CommunityInterceptor implements HandlerInterceptor {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private NotificationMapper notificationMapper;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
@@ -32,16 +36,17 @@ public class CommunityInterceptor implements HandlerInterceptor {
                     User user = userMapper.selectByAccountId(accountId);
                     log.info("拦截器通过cookie获取user:" + user);
                     request.getSession().setAttribute("user",user);
+                    request.getSession().setAttribute("unreadCount", notificationMapper.countByIdAndUnRead(user.getId()));
                     break;
                 }
             }
         }
         //
-        if(request.getSession().getAttribute("user") == null){
+/*        if(request.getSession().getAttribute("user") == null){
              throw new CustomizeException(CustomizeErrorCode.NO_LOGIN);
 //             response.sendRedirect("/");
 //             return false;
-         }
+         }*/
 
         return true;
     }

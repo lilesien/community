@@ -29,7 +29,7 @@ public class CommentController {
     public Object post(@RequestBody CommentCreateDTO commentDTO,
                        HttpSession session){
         User user =  (User) session.getAttribute("user");
-        System.out.println(user);
+        System.out.println("comment" + user);
         //用户没有登陆
         if(user == null){
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
@@ -45,7 +45,7 @@ public class CommentController {
         //设置评论是谁评论的
         comment.setCommenter(user.getId());
         comment.setCommentCount(0);
-        commentService.insert(comment);
+        commentService.insert(comment, user);
 
         System.out.println(comment);
         return ResultDTO.ok();

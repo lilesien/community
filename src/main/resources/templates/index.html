@@ -10,20 +10,20 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap-theme.min.css}">
     <link rel="stylesheet" th:href="@{/css/community.css}">
     <script th:src="@{/js/community.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/editormd.min.css}">
+    <link rel="stylesheet" th:href="@{/css/editormd.preview.min.css}">
+    <script th:src="@{/js/editormd.min.js}"></script>
+    <script th:src="@{/js/lib/marked.min.js}"></script>
+    <script th:src="@{/js/lib/prettify.min.js}"></script>
+
+
 </head>
 <script type="text/javascript">
-    window.onload = function (){
-        var url = sessionStorage.getItem("gotoUrl");
-        if(url){
-            //返回的页面，
-            sessionStorage.removeItem("gotoUrl");
-            window.location.href = url;
-        }else {
-            var returnUrl = sessionStorage.getItem("returnUrl");
-            if (returnUrl) {
-                sessionStorage.removeItem("returnUrl");
-                window.location.href = returnUrl;
-            }
+    window.onload = function () {
+        var closable = window.localStorage.getItem("closable");
+        if (closable == "true") {
+            window.close();
+            window.localStorage.removeItem("closable");
         }
     }
 </script>
@@ -35,7 +35,7 @@
             <h2><span class="glyphicon glyphicon-list" aria-hidden="true"></span>发现问题</h2>
             <hr>
 <!--            输出页面的问题部分-->
-            <div class="media" th:each="question : ${pageInfo.questionList}" >
+            <div class="media" th:each="question : ${pageInfo.data}" >
                 <div class="media-left">
                     <a href="#">
                         <img class="media-object img-rounded" th:src="${question.getUser().getAvatarUrl()}" src="https://avatars.githubusercontent.com/u/62526735?v=4">
@@ -43,10 +43,10 @@
                 </div>
                 <div class="media-body">
 <!--                    <h4 class="media-heading" ><a role="button" aria-haspopup="true" aria-expanded="false"> <span th:text="${question.getTitle()}">怎么快速学会springboot开发</span></a></h4>-->
-                    <h4 class="media-heading">
+                    <h4 class="media-heading" >
                         <a th:href="@{/question/{id}(id=${question.id})}" th:text="${question.getTitle()}"></a>
                     </h4>
-                    <span th:text="${question.description}"></span><br>
+                    <!--<span th:text="${question.description}"></span><br>-->
                     <span class="text-desc"> <span th:text="${question.getCommentCount()}"></span>个评论 • <span th:text="${question.getViewCount()}"></span> 次浏览 • <span th:text="${#dates.format(question.getGmtCreate(),'yyyy-MM-dd')}"></span></span>
                 </div>
             </div>

@@ -16,7 +16,11 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/bootstrap-theme.min.css}">
     <link rel="stylesheet" th:href="@{/css/community.css}">
-    <script th:src="@{/js/moment.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/editormd.min.css}">
+    <link rel="stylesheet" th:href="@{/css/editormd.preview.min.css}">
+    <script th:src="@{/js/editormd.min.js}"></script>
+    <script th:src="@{/js/lib/marked.min.js}"></script>
+    <script th:src="@{/js/lib/prettify.min.js}"></script>
 </head>
 <body>
 <div th:replace="~{commons/common::headbar}"></div>
@@ -35,7 +39,14 @@
                 <!--上划线-->
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <!--文章主题-->
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${question.description}"></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="question-view">
+                    <textarea style="display: none" th:text="${question.description}"></textarea>
+                </div>
+                <script type="text/javascript">
+                    $(function(){
+                        editormd.markdownToHTML("question-view",{});
+                    })
+                </script>
                 <!--下划线-->
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <!--标签-->
@@ -110,18 +121,18 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h4>提交回复</h4>
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comment_sp">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="media">
-                        <div class="media-left">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+                    <div class="media" th:if="${session.user != null}">
+                        <div class="media-left" >
                             <a href="#">
-                                <img class="media-object img-rounded" th:src="${question.getUser().getAvatarUrl()}"
+                                <img class="media-object img-rounded" th:src="${session.user.avatarUrl}"
                                      src="https://avatars.githubusercontent.com/u/62526735?v=4">
                             </a>
                         </div>
                         <div class="media-body">
                             <!--                    <h4 class="media-heading" ><a role="button" aria-haspopup="true" aria-expanded="false"> <span th:text="${question.getTitle()}">怎么快速学会springboot开发</span></a></h4>-->
                             <h6 class="media-heading">
-                                <span th:href="@{/question/{id}(id=${question.id})}" th:text="${question.user.name}"></span>
+                                <span th:href="@{/question/{id}(id=${question.id})}" th:text="${session.user.name}"></span>
                             </h6>
                         </div>
                     </div>

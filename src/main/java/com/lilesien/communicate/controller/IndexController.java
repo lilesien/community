@@ -49,7 +49,7 @@ public class IndexController {
             }
         }
 //        List<QuestionDTO> list = questionService.list();//分页前的question集合
-        PaginationDTO pagination = questionService.list(page, size);
+        PaginationDTO<QuestionDTO> pagination = questionService.list(page, size);
 /*        log.info("question集合:" + list);
         model.addAttribute("questionList", list);*/
         log.info("当前页面详情:" + pagination);

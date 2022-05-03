@@ -28,7 +28,7 @@ public class QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
 
-    public PaginationDTO list(Integer page, Integer size){
+    public PaginationDTO<QuestionDTO> list(Integer page, Integer size){
         //问题的总条数转换为总的页数
         Integer pageCount = (questionMapper.count() + size - 1) / size;
         //处理页面不在范围内时的情况
@@ -40,7 +40,7 @@ public class QuestionService {
         //新的问题类的集合
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         //页面的信息
-        PaginationDTO paginationDTO = new PaginationDTO();
+        PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
         //通过查出的问题的创建者ID找到用户，并封装到一个新的问题类中1
         for (Question question : questionList) {
             User user = usermapper.findById(question.getCreator());
@@ -52,15 +52,20 @@ public class QuestionService {
             questionDTOList.add(questionDTO);
         }
         //将新的问题类的集合封装到页面类中
-        paginationDTO.setQuestionList(questionDTOList);
+        paginationDTO.setData(questionDTOList);
         //设置当前页面的信息
         paginationDTO.setDetail(page, pageCount, size);
         return paginationDTO;
     }
 
-    public PaginationDTO list(Integer userId, Integer page, Integer size) {
+    public Integer myQuestionCount(Integer userId){
+        return questionMapper.myQuestionCount(userId);
+    }
+
+    public PaginationDTO<QuestionDTO> list(Integer userId, Integer page, Integer size) {
         //问题的总条数转换为总的页数
-        Integer pageCount = (questionMapper.count() + size - 1) / size;
+        Integer count = questionMapper.count();
+        Integer pageCount = (count + size - 1) / size;
         //处理页面不在范围内时的情况
         page = page < 1 ? 1 : page;
         page = page > pageCount ? pageCount : page;
@@ -70,7 +75,7 @@ public class QuestionService {
         //新的问题类的集合
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         //页面的信息
-        PaginationDTO paginationDTO = new PaginationDTO();
+        PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
         //通过查出的问题的创建者ID找到用户，并封装到一个新的问题类中1
         for (Question question : questionList) {
             User user = usermapper.findById(question.getCreator());
@@ -82,7 +87,7 @@ public class QuestionService {
             questionDTOList.add(questionDTO);
         }
         //将新的问题类的集合封装到页面类中
-        paginationDTO.setQuestionList(questionDTOList);
+        paginationDTO.setData(questionDTOList);
         //设置当前页面的信息
         paginationDTO.setDetail(page, pageCount, size);
         return paginationDTO;

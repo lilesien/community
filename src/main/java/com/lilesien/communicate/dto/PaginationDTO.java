@@ -13,8 +13,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PaginationDTO {
-    private List<QuestionDTO> questionList;
+public class PaginationDTO<T> {
+    private List<T> data;
     //当前页
     private Integer currentPage;
     //页的总数
@@ -24,6 +24,8 @@ public class PaginationDTO {
     private boolean hasPrevious;
     private boolean hasNext;
     private List<Integer> pageList = new ArrayList<>();
+
+
 
     //当前页前后分别有多少页
     //currentPage

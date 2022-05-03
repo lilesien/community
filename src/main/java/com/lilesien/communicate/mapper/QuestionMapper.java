@@ -41,4 +41,7 @@ public interface QuestionMapper {
 
     @Select("select * from question where id != #{id} and tag regexp #{tag}")
     List<Question> selectRelatedQuestion(Question question);
+
+    @Select("select count(1) from question where creator = #{userId}")
+    Integer myQuestionCount(@Param("userId") Integer userId);
 }
