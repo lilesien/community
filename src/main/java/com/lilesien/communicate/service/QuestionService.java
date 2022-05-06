@@ -81,8 +81,12 @@ public class QuestionService {
         Integer count = questionMapper.myQuestionCount(userId);
         Integer pageCount = (count + size - 1) / size;
         //处理页面不在范围内时的情况
-        page = page < 1 ? 1 : page;
-        page = page > pageCount ? pageCount : page;
+        if(pageCount == 0){
+            page = 1;
+        }else {
+            page = page < 1 ? 1 : page;
+            page = page > pageCount ? pageCount : page;
+        }
         Integer offset = (page - 1) * size;
         //查询指定范围的问题
         List<Question> questionList = questionMapper.findQuestionByUserId(userId ,offset, size);

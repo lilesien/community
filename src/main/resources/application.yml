@@ -11,6 +11,7 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
 
+
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -18,3 +19,10 @@ spring:
     username: root
     password: 267946
     driver-class-name: com.mysql.cj.jdbc.Driver
+logging:
+  file:
+    name: log/community.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 5
