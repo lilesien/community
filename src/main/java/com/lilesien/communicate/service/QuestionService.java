@@ -1,6 +1,7 @@
 package com.lilesien.communicate.service;
 
 import com.lilesien.communicate.dto.PaginationDTO;
+import com.lilesien.communicate.dto.QueryDTO;
 import com.lilesien.communicate.dto.QuestionDTO;
 import com.lilesien.communicate.exception.CustomizeErrorCode;
 import com.lilesien.communicate.exception.CustomizeException;
@@ -28,15 +29,28 @@ public class QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
 
-    public PaginationDTO<QuestionDTO> list(Integer page, Integer size){
+    public PaginationDTO<QuestionDTO> list(String search, Integer page, Integer size){
+        if(!StringUtils.isEmpty(search)){
+            search = Arrays.stream(search.split(" ")).collect(Collectors.joining("|"));
+        }else {
+            search = null;
+        }
+        QueryDTO queryDTO = new QueryDTO();
         //问题的总条数转换为总的页数
-        Integer pageCount = (questionMapper.count() + size - 1) / size;
-        //处理页面不在范围内时的情况
-        page = page < 1 ? 1 : page;
-        page = page > pageCount ? pageCount : page;
+        Integer pageCount = (questionMapper.count(search) + size - 1) / size;
+        if(pageCount == 0){
+            page = 1;
+        }else{
+            //处理页面不在范围内时的情况
+            page = page < 1 ? 1 : page;
+            page = page > pageCount ? pageCount : page;
+        }
         int offset = (page - 1) * size;
+        queryDTO.setSize(size);
+        queryDTO.setOffset(offset);
+        queryDTO.setSearch(search);
         //查询指定范围的问题
-        List<Question> questionList = questionMapper.listByGmtcreateDesc(offset, size);;
+        List<Question> questionList = questionMapper.listByGmtcreateDesc(queryDTO);
         //新的问题类的集合
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         //页面的信息
@@ -64,7 +78,7 @@ public class QuestionService {
 
     public PaginationDTO<QuestionDTO> list(Integer userId, Integer page, Integer size) {
         //问题的总条数转换为总的页数
-        Integer count = questionMapper.count();
+        Integer count = questionMapper.myQuestionCount(userId);
         Integer pageCount = (count + size - 1) / size;
         //处理页面不在范围内时的情况
         page = page < 1 ? 1 : page;
@@ -127,6 +141,7 @@ public class QuestionService {
         }
     }
 
+    //相关问题
     public List<QuestionDTO> selectRelatedQuestion(QuestionDTO queryDTO) {
         if(StringUtils.isEmpty(queryDTO.getTag())){
             return new ArrayList<>();

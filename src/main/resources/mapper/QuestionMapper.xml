@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace绑定哪个类-->
+<mapper namespace="com.lilesien.communicate.mapper.QuestionMapper">
+
+    <resultMap id="baseResultMap" type="com.lilesien.communicate.pojo.Question">
+        <id column="id" property="id"/>
+        <id column="title" property="title"/>
+        <id column="description" property="description"/>
+        <id column="gmt_create" property="gmtCreate"/>
+        <id column="gmt_modified" property="gmtModified"/>
+        <id column="creator" property="creator"/>
+        <id column="comment_count" property="commentCount"/>
+        <id column="view_count" property="viewCount"/>
+        <id column="like_count" property="likeCount"/>
+        <id column="tag" property="tag"/>
+    </resultMap>
+    
+    <select id="count" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select count(1) from question
+        <where>
+            <if test="search != null">
+                and title regexp #{search}
+            </if>
+        </where>
+    </select>
+
+    <select id="listByGmtcreateDesc" parameterType="com.lilesien.communicate.dto.QueryDTO" resultMap="baseResultMap">
+        select * from question
+        <where>
+            <if test="search != null">
+                and title regexp #{search}
+            </if>
+        </where>
+        order by gmt_create desc limit #{offset}, #{size}
+    </select>
+
+</mapper>

@@ -10,11 +10,6 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap-theme.min.css}">
     <link rel="stylesheet" th:href="@{/css/community.css}">
     <script th:src="@{/js/community.js}"></script>
-    <link rel="stylesheet" th:href="@{/css/editormd.min.css}">
-    <link rel="stylesheet" th:href="@{/css/editormd.preview.min.css}">
-    <script th:src="@{/js/editormd.min.js}"></script>
-    <script th:src="@{/js/lib/marked.min.js}"></script>
-    <script th:src="@{/js/lib/prettify.min.js}"></script>
 
 
 </head>
@@ -54,24 +49,24 @@
             <nav aria-label="Page navigation">
                 <ul class="pagination">
                     <li>
-                        <a th:if="${pageInfo.hasFirst}" th:href="@{/(page=${1})}" href="#" aria-label="Previous">
+                        <a th:if="${pageInfo.hasFirst}" th:href="@{/(page=${1},search=${search})}" href="#" aria-label="Previous">
                             <span aria-hidden="true">&lt;&lt;</span>
                         </a>
-                        <a th:if="${pageInfo.hasPrevious}" th:href="@{/(page=${pageInfo.currentPage - 1})}" href="#" aria-label="Next">
+                        <a th:if="${pageInfo.hasPrevious}" th:href="@{/(page=${pageInfo.currentPage - 1},search=${search})}" href="#" aria-label="Next">
                             <span aria-hidden="true">&lt;</span>
                         </a>
                     </li>
-                    <li th:class="${page == pageInfo.currentPage} ? 'active' : '' " th:each="page : ${pageInfo.pageList}"><a th:text="${page}" th:href="@{/(page=${page})}">*</a></li>
+                    <li th:class="${page == pageInfo.currentPage} ? 'active' : '' " th:each="page : ${pageInfo.pageList}"><a th:text="${page}" th:href="@{/(page=${page},search=${search})}">*</a></li>
 <!--                    <li><a href="#">1</a></li>-->
 <!--                    <li><a href="#">2</a></li>-->
 <!--                    <li><a href="#">3</a></li>-->
 <!--                    <li><a href="#">4</a></li>-->
 <!--                    <li><a href="#">5</a></li>-->
                     <li>
-                        <a th:if="${pageInfo.hasNext}"  th:href="@{/(page=${pageInfo.currentPage+1})}" href="#" aria-label="Next">
+                        <a th:if="${pageInfo.hasNext}"  th:href="@{/(page=${pageInfo.currentPage+1},search=${search})}" href="#" aria-label="Next">
                             <span aria-hidden="true">&gt;</span>
                         </a>
-                        <a th:if="${pageInfo.hasEnd}" th:href="@{/(page=${pageInfo.totalPage})}" href="#" aria-label="Next">
+                        <a th:if="${pageInfo.hasEnd}" th:href="@{/(page=${pageInfo.totalPage},search=${search})}" href="#" aria-label="Next">
                             <span aria-hidden="true">&gt;&gt;</span>
                         </a>
                     </li>

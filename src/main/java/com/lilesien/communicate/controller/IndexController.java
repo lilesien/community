@@ -30,30 +30,15 @@ public class IndexController {
     public String index(HttpServletRequest request,
                         Model model,
                         @RequestParam(value = "page", defaultValue = "1") Integer page,
-                        @RequestParam(value = "size", defaultValue = "3") Integer size){
-        Cookie[] cookies = request.getCookies();
-        //从浏览器中判断cookie信息，通过cookie中的token从数据库获取用户
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("accountId")) {
-                    String accountId = cookie.getValue();
-                    User user = userMapper.selectByAccountId(accountId);
-                    log.info("数据库用户:" + user);
-                    System.out.println(user);
-                    //如果数据库中存在这个人，就添加到session中
-                    if (user != null) {
-                        request.getSession().setAttribute("user", user);
-                    }
-                    break;
-                }
-            }
-        }
+                        @RequestParam(value = "size", defaultValue = "3") Integer size,
+                        @RequestParam(value = "search", required = false) String search){
 //        List<QuestionDTO> list = questionService.list();//分页前的question集合
-        PaginationDTO<QuestionDTO> pagination = questionService.list(page, size);
+        PaginationDTO<QuestionDTO> pagination = questionService.list(search, page, size);
 /*        log.info("question集合:" + list);
         model.addAttribute("questionList", list);*/
         log.info("当前页面详情:" + pagination);
         model.addAttribute("pageInfo", pagination);
+        model.addAttribute("search",search);
         return "index";
     }
 }

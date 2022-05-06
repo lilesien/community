@@ -1,5 +1,6 @@
 package com.lilesien.communicate.mapper;
 
+import com.lilesien.communicate.dto.QueryDTO;
 import com.lilesien.communicate.dto.QuestionDTO;
 import com.lilesien.communicate.pojo.Question;
 import org.apache.ibatis.annotations.*;
@@ -15,8 +16,7 @@ public interface QuestionMapper {
     @Select("select * from question limit #{offset}, #{size}")
     List<Question> list(@Param("offset") Integer offset, @Param("size") Integer size);
 
-    @Select("select count(1) from question")
-    Integer count();
+    Integer count(@Param("search") String search);
 
     @Select("select * from question where creator = #{userId} order by gmt_create desc limit #{offset}, #{size}")
     List<Question> findQuestionByUserId(@Param("userId") Integer userId, @Param("offset") Integer offset, @Param("size") Integer size);
@@ -36,12 +36,12 @@ public interface QuestionMapper {
     @Update("update question set comment_count = comment_count + #{commentCount} where id = #{id}")
     void incrCommentById(Question question);
 
-    @Select("select * from question order by gmt_create desc limit #{offset}, #{size} ")
-    List<Question> listByGmtcreateDesc(@Param("offset") int offset, @Param("size") Integer size);
+    List<Question> listByGmtcreateDesc(QueryDTO queryDTO);
 
     @Select("select * from question where id != #{id} and tag regexp #{tag}")
     List<Question> selectRelatedQuestion(Question question);
 
     @Select("select count(1) from question where creator = #{userId}")
     Integer myQuestionCount(@Param("userId") Integer userId);
+
 }

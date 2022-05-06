@@ -35,8 +35,8 @@ public class PaginationDTO<T> {
         //设置页面总数
         this.totalPage = pageCount;
         //设置是否有< << >> >图标
-        this.hasPrevious = currentPage != 1;
-        this.hasNext = currentPage != pageCount;
+        this.hasPrevious = pageCount != 0 && currentPage != 1;
+        this.hasNext = pageCount != 0 && currentPage != pageCount;
         this.hasFirst = currentPage > 4;
         this.hasEnd = currentPage < pageCount - 3;
         //设置页面标签的集合(如果存在)
