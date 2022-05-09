@@ -29,15 +29,13 @@ public class QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
 
-    public PaginationDTO<QuestionDTO> list(String search, Integer page, Integer size){
+    public PaginationDTO<QuestionDTO> list(String tag,String search, Integer page, Integer size){
         if(!StringUtils.isEmpty(search)){
             search = Arrays.stream(search.split(" ")).collect(Collectors.joining("|"));
-        }else {
-            search = null;
         }
         QueryDTO queryDTO = new QueryDTO();
         //问题的总条数转换为总的页数
-        Integer pageCount = (questionMapper.count(search) + size - 1) / size;
+        Integer pageCount = (questionMapper.count(tag,search) + size - 1) / size;
         if(pageCount == 0){
             page = 1;
         }else{
@@ -46,6 +44,7 @@ public class QuestionService {
             page = page > pageCount ? pageCount : page;
         }
         int offset = (page - 1) * size;
+        queryDTO.setTag(tag);
         queryDTO.setSize(size);
         queryDTO.setOffset(offset);
         queryDTO.setSearch(search);
@@ -58,7 +57,6 @@ public class QuestionService {
         //通过查出的问题的创建者ID找到用户，并封装到一个新的问题类中1
         for (Question question : questionList) {
             User user = usermapper.findById(question.getCreator());
-            System.out.println("questionService:list(..)" + user);
             //创建QuestionDTO，将用户封装到新的问题类中，并将新的问题类添加到集合中
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question,questionDTO);
@@ -97,7 +95,6 @@ public class QuestionService {
         //通过查出的问题的创建者ID找到用户，并封装到一个新的问题类中1
         for (Question question : questionList) {
             User user = usermapper.findById(question.getCreator());
-            System.out.println("questionService : list(...) : " + user);
             //创建QuestionDTO，将用户封装到新的问题类中，并将新的问题类添加到集合中
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question,questionDTO);

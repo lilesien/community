@@ -7,6 +7,11 @@ body {
     margin: 30px;
 }
 
+.hotTag{
+    font-size: 15px;
+    clear: both;
+}
+
 .side {
     margin: 5px 0;
 }

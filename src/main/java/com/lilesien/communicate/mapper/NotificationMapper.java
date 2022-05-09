@@ -14,7 +14,7 @@ public interface NotificationMapper {
     @Select("select count(1) from notification where receiver = #{userId}")
     Integer receiverEqualsId(@Param("userId") Integer userId);
 
-    @Select("select * from notification where receiver = #{userId} limit #{offset}, #{size}")
+    @Select("select * from notification where receiver = #{userId} order by gmt_create desc limit #{offset}, #{size}")
     List<Notification> findNotifiyLimitByUserId(@Param("userId") Integer userId,@Param("offset") Integer offset,@Param("size") Integer size);
 
     @Select("select count(1) from notification where receiver = #{userId} and status = 0")

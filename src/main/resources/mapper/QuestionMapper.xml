@@ -21,8 +21,11 @@
     <select id="count" resultType="java.lang.Integer" parameterType="java.lang.String">
         select count(1) from question
         <where>
-            <if test="search != null">
+            <if test="search != null and search != ''">
                 and title regexp #{search}
+            </if>
+            <if test="tag != null and tag != ''">
+                and tag regexp #{tag}
             </if>
         </where>
     </select>
@@ -30,8 +33,11 @@
     <select id="listByGmtcreateDesc" parameterType="com.lilesien.communicate.dto.QueryDTO" resultMap="baseResultMap">
         select * from question
         <where>
-            <if test="search != null">
+            <if test="search != null and search != ''">
                 and title regexp #{search}
+            </if>
+            <if test="tag != null and tag != ''">
+                and tag regexp #{tag}
             </if>
         </where>
         order by gmt_create desc limit #{offset}, #{size}

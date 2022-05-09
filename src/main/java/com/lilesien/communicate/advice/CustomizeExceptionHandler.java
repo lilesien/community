@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
  * 通用异常处理
  */
 public class CustomizeExceptionHandler {
-
     /**
      * 在评论功能模块，对于局部响应的形式存在问题，
      * 这个跳转页面和返回错误信息不能同时存在，通过添加responseBody注解进行解决

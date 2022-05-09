@@ -1,15 +1,15 @@
 github:
   client:
-    id: Iv1.933474e281b2fa6b
-    secret: 0fcc6db2e9213b42ec4e77a3daf438e37e94f362
+    id: githubApp clientId
+    secret: githubApp clientSecret
     redirectUri: http://localhost:8080/callback
 
 ali:
   cloud:
     regionId: oss-cn-hangzhou.aliyuncs.com
-    accessKeyId: LTAI5tLeiJ8iZdpCi9Yk4bMf
-    accessKeySecret: 1YQ39FJYzpwXhYlmRa48GIPtcUHNA2
-    backetName: lilesien
+    accessKeyId: 服务器用户accessKeyId
+    accessKeySecret: 服务器用户accessKeySearet
+    backetName: 服务器backetName
 
 mybatis:
   type-aliases-package: com.lilesien.dto
@@ -38,3 +38,5 @@ logging:
       lilesien:
         communicate:
           mapper: debug
+server:
+  port: 8080

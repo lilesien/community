@@ -1,5 +1,7 @@
 package com.lilesien.communicate.controller;
 
+import com.lilesien.communicate.cache.HotTagCache;
+import com.lilesien.communicate.dto.HotTagDTO;
 import com.lilesien.communicate.dto.PaginationDTO;
 import com.lilesien.communicate.dto.QuestionDTO;
 import com.lilesien.communicate.pojo.User;
@@ -21,24 +23,27 @@ import java.util.List;
 public class IndexController {
 
     @Autowired
-    private UserMapper userMapper;
+    private QuestionService questionService;
 
     @Autowired
-    private QuestionService questionService;
+    private HotTagCache hotTagCache;
 
     @RequestMapping({"/","/index"})
     public String index(HttpServletRequest request,
                         Model model,
                         @RequestParam(value = "page", defaultValue = "1") Integer page,
-                        @RequestParam(value = "size", defaultValue = "3") Integer size,
-                        @RequestParam(value = "search", required = false) String search){
+                        @RequestParam(value = "size", defaultValue = "10") Integer size,
+                        @RequestParam(value = "search", required = false) String search,
+                        @RequestParam(value = "tag", required = false) String tag){
 //        List<QuestionDTO> list = questionService.list();//分页前的question集合
-        PaginationDTO<QuestionDTO> pagination = questionService.list(search, page, size);
+        PaginationDTO<QuestionDTO> pagination = questionService.list(tag,search, page, size);
 /*        log.info("question集合:" + list);
         model.addAttribute("questionList", list);*/
-        log.info("当前页面详情:" + pagination);
+        List<String> hotTagList = hotTagCache.getHots();
         model.addAttribute("pageInfo", pagination);
         model.addAttribute("search",search);
+        model.addAttribute("tag",tag);
+        model.addAttribute("hotTags",hotTagList);
         return "index";
     }
 }

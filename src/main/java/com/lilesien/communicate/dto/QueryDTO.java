@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class QueryDTO {
     private String search;
+    private String tag;
     private Integer size;
     private Integer offset;
 }

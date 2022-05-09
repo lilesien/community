@@ -16,7 +16,7 @@ public interface QuestionMapper {
     @Select("select * from question limit #{offset}, #{size}")
     List<Question> list(@Param("offset") Integer offset, @Param("size") Integer size);
 
-    Integer count(@Param("search") String search);
+    Integer count(@Param("tag") String tag, @Param("search") String search);
 
     @Select("select * from question where creator = #{userId} order by gmt_create desc limit #{offset}, #{size}")
     List<Question> findQuestionByUserId(@Param("userId") Integer userId, @Param("offset") Integer offset, @Param("size") Integer size);

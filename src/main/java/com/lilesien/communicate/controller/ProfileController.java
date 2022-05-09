@@ -30,7 +30,7 @@ public class ProfileController {
     public String profile(@PathVariable(name = "action") String action,
                           Model model,
                           @RequestParam(value = "page", defaultValue = "1") Integer page,
-                          @RequestParam(value = "size", defaultValue = "3") Integer size,
+                          @RequestParam(value = "size", defaultValue = "10") Integer size,
                           HttpSession session){
         User user = (User) session.getAttribute("user");
         model.addAttribute("myQuestion",questionService.myQuestionCount(user.getId()));

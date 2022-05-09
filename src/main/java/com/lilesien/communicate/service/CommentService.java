@@ -94,6 +94,7 @@ public class CommentService {
         Notification notification = new Notification();
         notification.setGmtCreate(System.currentTimeMillis());
         notification.setType(notificationTypeEnum.getType());
+        //outerId设置为questionId是为了定向到问题
         notification.setOuterId(questionId);
         notification.setNotifier(comment.getCommenter());
         notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
